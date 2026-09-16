@@ -17,6 +17,9 @@
         <a href="#about">About</a>
         <a href="#work">Work</a>
         <a href="#contact">Contact</a>
+        <button class="theme-toggle" type="button" aria-label="Switch to light theme" aria-pressed="true">
+          <span aria-hidden="true">☀</span><span class="toggle-label">Light</span>
+        </button>
       </nav>
     </header>
 
@@ -66,6 +69,24 @@
     </main>
 
     <footer><p>© <span id="year"></span> Joseph Stiller</p><div><a href="https://www.linkedin.com/in/josephstiller/">LinkedIn</a><a href="https://github.com/jstiller-1">GitHub</a></div></footer>
-    <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+    <script>
+      document.getElementById('year').textContent = new Date().getFullYear();
+      const toggle = document.querySelector('.theme-toggle');
+      const savedTheme = localStorage.getItem('portfolio-theme');
+      const setTheme = (theme) => {
+        document.documentElement.dataset.theme = theme;
+        const isDark = theme === 'dark';
+        toggle.setAttribute('aria-pressed', String(isDark));
+        toggle.setAttribute('aria-label', `Switch to ${isDark ? 'light' : 'dark'} theme`);
+        toggle.querySelector('span').textContent = isDark ? '☀' : '☾';
+        toggle.querySelector('.toggle-label').textContent = isDark ? 'Light' : 'Dark';
+      };
+      setTheme(savedTheme || 'dark');
+      toggle.addEventListener('click', () => {
+        const nextTheme = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
+        localStorage.setItem('portfolio-theme', nextTheme);
+        setTheme(nextTheme);
+        });
+      </script>
   </body>
 </html>
